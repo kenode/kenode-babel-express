@@ -1,0 +1,138 @@
+'use strict';
+
+import webpack from 'webpack'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import path from 'path'
+import pngquant from 'imagemin-pngquant'
+import { readdirSync } from 'fs'
+
+const paths = {
+  base: './public',
+  image: './public/img',
+  fonts: './public/fonts',
+  style: './public/css',
+  js: './public/js',
+  json: './public/json',
+  html: './public/html',
+  views: './views'
+}
+
+const manifest = paths.base + '/rev-manifest.json'
+
+const vendor = {
+  filename: {
+    style: 'vendor.css',
+    js: 'vendor.js'
+  },
+  style: [
+    'node_modules/bootstrap/dist/css/bootstrap.css',
+    'node_modules/font-awesome/css/font-awesome.css'
+  ],
+  js: [
+    'node_modules/jquery/dist/jquery.js',
+    'node_modules/bootstrap/dist/js/bootstrap.js',
+    'node_modules/lodash/lodash.js',
+    'node_modules/react/dist/react.js',
+    'node_modules/react-dom/dist/react-dom.js'
+  ],
+  copys: [
+    'node_modules/bootstrap/dist/fonts/*.+(eot|svg|ttf|woff|woff2)',
+    'node_modules/font-awesome/fonts/*.+(eot|svg|ttf|woff|woff2|otf)'
+  ]
+}
+
+const assets = {
+  image: {
+    file: ['./assets/image/**/*.+(jpg|gif|png|svg)'],
+    opts: {
+      progressive: true,
+      interlaced: true,
+      svgoPlugins: [{removeViewBox: false}],
+      optimizationLevel: 5,
+      use: [pngquant()]
+    }
+  },
+  style: {
+    entry: ['./assets/sass/*.scss'],
+    sprite: {
+      'spriteSheet': paths.image + '/sprite.png',
+      'pathToSpriteSheetFromCSS': '../img/sprite.png'
+    }
+  },
+  copys: [
+    './assets/json/**/*.json'
+  ],
+  html: {
+    file: ['./assets/html/*.+(html|htm)']
+  },
+  views: {
+    file: ['./views/**/*.html']
+  }
+}
+
+const compile = {
+  entry: getEntry('./frontend'),
+  output: {
+    path: path.join(process.cwd(), 'public', 'js'),
+    filename: '[name].js'
+  },
+  resolve: {
+    extensions: ['', '.js', '.jsx', '.json']
+  },
+  externals: {
+    'lodash': '_',
+    'react': 'React',
+    'react-dom': 'ReactDOM'
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.(js)?$/,
+        exclude: /node_modules/,
+        loader: 'babel',
+        query: {
+          cacheDirectory: true,
+          presets: ['react', 'es2015', 'stage-0']
+        }
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
+      }
+    ]
+  },
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin()
+  ],
+  //devtool: 'source-map'
+}
+
+const server = {
+  host: 'localhost',
+  port: 8000,
+  livereload: true,
+  directoryListing: false,
+  open: false
+}
+
+const watch = {
+  image: ['./assets/image/**/*.+(png|gif|jpg|jpeg|svg)'],
+  style: ['./assets/sass/**/*.scss', './assets/sprite/**/*.png'],
+  source: ['./frontend/**/*.+(js|jsx)'],
+  copys: ['./assets/json/**/*.json'],
+  html: ['./assets/html/**/*.+(html|htm)']
+}
+
+export { paths, manifest, vendor, assets, compile, server, watch }
+export default { paths, manifest, vendor, assets, compile, server, watch }
+
+function getEntry (path) {
+  let [files, tag, entry] = [readdirSync(path), null, {}]
+  files.forEach( filename => {
+    if (/\.(js|jsx)$/.test(filename)) {
+      tag = filename.replace(/\.(js|jsx)$/, '')
+      entry[tag] = path + '/' + filename
+    }
+  })
+  return entry
+}
