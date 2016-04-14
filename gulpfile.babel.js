@@ -15,8 +15,10 @@ import chalk from 'chalk'
 import prettyTime from 'pretty-hrtime'
 import { paths, vendor, assets, compile, server, watch } from './gulp.config'
 
-const $ = gulpLoadPlugins()
-const runSequence = sequence.use(gulp)
+const [$, runSequence] = [
+  gulpLoadPlugins(),
+  sequence.use(gulp)
+]
 
 // 清理目录
 gulp.task('clean', () =>
