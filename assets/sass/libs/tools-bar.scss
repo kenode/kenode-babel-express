@@ -1,0 +1,25 @@
+//sass style
+//------------------------------------
+
+#tools-bar {
+	height: 100%;
+  background: #666;
+  flex: 0 0 13em;
+  transition: all .3s;
+  
+}
+
+@media only screen and (max-width: 1334px) {
+  #tools-bar {
+    flex: 0 0 3.5em;
+  }
+}
+
+@media only screen and (max-width: 418px) {
+  #tools-bar {
+    flex: 0;
+    position: fixed;
+    width: 18em;
+    left: -18em;
+  }
+}

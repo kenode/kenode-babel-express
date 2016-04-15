@@ -1,0 +1,15 @@
+//sass style
+//------------------------------------
+
+.screen-wrap {
+  height: 100%;
+  flex: 0 0 27em;
+  background: #eee;
+  transition: flex .3s;
+}
+
+@media only screen and (max-width: 958px) {
+  .screen-wrap {
+    flex: 0;
+  }
+}

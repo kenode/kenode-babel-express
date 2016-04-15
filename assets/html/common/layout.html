@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+  <title>{% block title %}My Title{% endblock %}</title>
+  <!-- Styles -->
+  <link href="/css/vendor.css" rel="stylesheet">
+  <link href="/css/{% block style %}index{% endblock %}.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="wraper">
+  {% include 'tools-bar.html' %}
+  {% include 'screen-wrap.html' %}
+  <div class="bodyer-wrap">
+    <div class="navbar-top"></div>
+    <div class="body-inner">
+      <div class="bodyer">
+        
+    </div>  
+    </div>
+  </div>
+</div>
+<script src="/js/vendor.js"></script>
+<script src="/js/{% block entry %}index{% endblock %}.js"></script>
+</body>
+</html>
