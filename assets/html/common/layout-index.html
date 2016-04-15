@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block wraper %}
+{% include 'tools-bar.html' %}
+{% include 'screen-wrap.html' %}
+  <div class="bodyer-wrap">
+    <div class="navbar-top"></div>
+    <div class="body-inner">
+      <div class="bodyer">
+        {% block bodyer %}{% endblock %}
+      </div>  
+    </div>
+  </div>
+{% endblock %}
