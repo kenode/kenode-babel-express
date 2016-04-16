@@ -8,17 +8,31 @@ import sequence from 'run-sequence'
 import minifyCss from 'gulp-minify-css'
 import sprite from 'gulp-css-spriter'
 import frontMatter from 'gulp-front-matter'
-import { unlink } from 'fs'
+import revReplace from 'gulp-rev-replace'
+import _ from 'lodash'
+import { existsSync, readFileSync, unlink, writeFileSync } from 'fs'
 import path from 'path'
 import gutil from 'gulp-util'
 import chalk from 'chalk'
 import prettyTime from 'pretty-hrtime'
-import { paths, vendor, assets, compile, server, watch } from './gulp.config'
+import { paths, manifest, vendor, assets, compile, server, watch, auth } from './gulp.config'
 
 const [$, runSequence] = [
   gulpLoadPlugins(),
   sequence.use(gulp)
 ]
+
+const getJsonData = (file) => {
+  let _auth = auth
+  if (existsSync('./assets/html/auth.json')) {
+    _auth = require('./assets/html/auth.json')
+  }
+  let data = require('./assets/html/' + path.basename(file.path) + '.json')
+  if (_auth.state) {
+    data = Object.assign(data, { auth: _auth.user })
+  }
+  return data
+}
 
 // 清理目录
 gulp.task('clean', () =>
@@ -30,6 +44,7 @@ gulp.task('vendor-style', () => {
   return gulp.src(vendor.style)
              .pipe($.concat(vendor.filename.style))
              .pipe($.minifyCss())
+             .pipe($.rename({ suffix: '.min' }))
              .pipe(gulp.dest(paths.style))
 })
 
@@ -38,6 +53,7 @@ gulp.task('vendor-js', () => {
   return gulp.src(vendor.js)
              .pipe($.concat(vendor.filename.js))
              .pipe($.uglify())
+             .pipe($.rename({ suffix: '.min' }))
              .pipe(gulp.dest(paths.js))
 })
 
@@ -45,7 +61,7 @@ gulp.task('vendor-js', () => {
 gulp.task('vendor-copys', () => {
   return gulp.src(vendor.copys, { dot: true})
              .pipe(gulp.dest( file => {
-               let filePath = file.path.toLowerCase();
+               let filePath = file.path.toLowerCase()
                if (/\.(js|js.map)$/.test(filePath)) {
                  return paths.js
                }
@@ -57,6 +73,12 @@ gulp.task('vendor-copys', () => {
                }
                return paths.base
              }))
+})
+
+// IE-Blocker
+gulp.task('ie-blocker', () => {
+  return gulp.src(vendor.ieblock, { dot: true})
+             .pipe(gulp.dest(paths.base + '/ie-blocker'))
 })
 
 // 压缩资源图片
@@ -84,6 +106,7 @@ gulp.task('assets-style', () => {
              }))
              .pipe(sprite(assets.style.sprite))
              .pipe(minifyCss())
+             .pipe($.rename({ suffix: '.min' }))
              .pipe(gulp.dest(paths.style));
 })
 
@@ -91,7 +114,7 @@ gulp.task('assets-style', () => {
 gulp.task('assets-copys', () => {
   return gulp.src(assets.copys, { dot: true})
              .pipe(gulp.dest( file => {
-               let filePath = file.path.toLowerCase();
+               let filePath = file.path.toLowerCase()
                if (/\.(json)$/.test(filePath)) {
                  return paths.json
                }
@@ -118,10 +141,65 @@ gulp.task('compile-js', () => {
 // 编译HTML
 gulp.task('compile-html', () => {
   return gulp.src(assets.html.file)
-             .pipe(frontMatter({ property: 'data' }))
+             //.pipe(frontMatter({ property: 'data' }))
+             .pipe($.data(getJsonData))
              .pipe($.swig({ defaults: { cache: false } }))
              .pipe(gulp.dest(paths.html))
 })
+
+// 生成模版视图
+gulp.task('views-html', () => {
+  return gulp.src('./assets/html/**/*.html')
+             .pipe(gulp.dest('./views'))
+})
+
+// 生成版本号
+gulp.task('generate-rev', () => {
+  return gulp.src([
+               paths.base + '/**/*.css', 
+               paths.base + '/**/*.js', 
+               paths.base + '/**/sprite.png'
+             ])
+             .pipe($.rev())
+             .pipe($.sourcemaps.init())
+             .pipe($.sourcemaps.write('./'))
+             .pipe(gulp.dest(paths.base))
+             .pipe($.rev.manifest({ merge: false }))
+             .pipe(gulp.dest(paths.base))
+})
+
+// 写入版本号
+gulp.task('compile-rev', () => {
+  let manifestFile = gulp.src(manifest);
+  return gulp.src([
+               paths.base + '/**/*.html', 
+               paths.base + '/**/*.css'
+             ])
+             .pipe(revReplace({ manifest: manifestFile }))
+             .pipe(gulp.dest(paths.base))
+             .on('end', () => {
+               let _manifest = require(manifest)
+               del.sync(paths.base + '/**/*.+(png.map)', { dot: true })
+               Object.keys(_manifest).forEach( filename => {
+                 del.sync(paths.base + '/' + filename, { dot: true })
+               })
+               let viewsObj = { style: {}, entry: {} }
+               _.mapKeys(_manifest, (val, key) => {
+                 let [_key, _val] = [
+                   key.replace(/(css|js)(\/)(\w+)(\.min\.)(css|js)/, '$3'),
+                   val.replace(/(css|js)(\/)([\w\-]+)(\.min\.)(css|js)/, '$3')
+                 ]
+                 if (/^css\//.test(key)) {
+                   viewsObj.style[_key] = _val
+                 }
+                 if (/^js\//.test(key)) {
+                   viewsObj.entry[_key] = _val
+                 }
+               })
+               writeFileSync(paths.views + '/views.json', JSON.stringify(viewsObj, null, 2))
+               del.sync(manifest, { dot: true })
+             })
+});
 
 // 调试用静态服务
 gulp.task('server', () => {
@@ -136,7 +214,7 @@ gulp.task('default', ['build'])
 gulp.task('dev', () => 
   runSequence('clean',
              ['assets-image', 'assets-style', 'assets-copys'], 
-             ['vendor-style', 'vendor-js', 'vendor-copys'],
+             ['vendor-style', 'vendor-js', 'vendor-copys', 'ie-blocker'],
              ['compile-html'],
              ['compile-js'],
              ['server', 'watch'])
@@ -145,20 +223,23 @@ gulp.task('dev', () =>
 // 编译版本
 gulp.task('build', () =>
   runSequence('clean',
-             ['assets-image', 'assets-style', 'assets-copys'], 
-             ['vendor-style', 'vendor-js', 'vendor-copys'],
-             ['compile-js'])
+             ['assets-image', 'assets-style'], 
+             ['vendor-style', 'vendor-js'],
+             ['compile-js'],
+             ['generate-rev'],
+             ['compile-html'],
+             ['views-html'],
+             ['compile-rev'],
+             ['vendor-copys', 'ie-blocker', 'assets-copys'])
 )
 
 // 监听目录变化
 gulp.task('watch', () => {
-  gulp.watch(watch.image, ['assets-image'])
-  gulp.watch(watch.style, ['assets-style'])
-  gulp.watch(watch.source, ['compile-js'])
-  $.watch(watch.copys, (e) => 
-    watchHandle(e, 'assets-copys')
-  )
-  gulp.watch(watch.html, ['compile-html'])
+  $.watch(watch.image, (e) => watchHandle(e, 'assets-image') )
+  $.watch(watch.style, (e) => watchHandle(e, 'assets-style') )
+  $.watch(watch.source, (e) => watchHandle(e, 'compile-js') )
+  $.watch(watch.copys, (e) => watchHandle(e, 'assets-copys') )
+  $.watch(watch.html, (e) => watchHandle(e, 'compile-html') )
 })
 
 // 拓展监听功能，如新增和删除文件

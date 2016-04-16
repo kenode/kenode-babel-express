@@ -14,6 +14,7 @@ const paths = {
   js: './public/js',
   json: './public/json',
   html: './public/html',
+  ieblock: './public/ie-blocker',
   views: './views'
 }
 
@@ -38,7 +39,8 @@ const vendor = {
   copys: [
     'node_modules/bootstrap/dist/fonts/*.+(eot|svg|ttf|woff|woff2)',
     'node_modules/font-awesome/fonts/*.+(eot|svg|ttf|woff|woff2|otf)'
-  ]
+  ],
+  ieblock: 'node_modules/ie-blocker/ie-blocker/**/*.*'
 }
 
 const assets = {
@@ -74,7 +76,7 @@ const compile = {
   entry: getEntry('./frontend'),
   output: {
     path: path.join(process.cwd(), 'public', 'js'),
-    filename: '[name].js'
+    filename: '[name].min.js'
   },
   resolve: {
     extensions: ['', '.js', '.jsx', '.json']
@@ -120,11 +122,19 @@ const watch = {
   style: ['./assets/sass/**/*.scss', './assets/sprite/**/*.png'],
   source: ['./frontend/**/*.+(js|jsx)'],
   copys: ['./assets/json/**/*.json'],
-  html: ['./assets/html/**/*.+(html|htm)']
+  html: ['./assets/html/**/*.+(html|htm|json)']
 }
 
-export { paths, manifest, vendor, assets, compile, server, watch }
-export default { paths, manifest, vendor, assets, compile, server, watch }
+const auth = {
+  state: true,
+  user: {
+    uid: '570f610d5de77e2056cd9f8a',
+    username: 'thondery'
+  }
+}
+
+export { paths, manifest, vendor, assets, compile, server, watch, auth }
+export default { paths, manifest, vendor, assets, compile, server, watch, auth }
 
 function getEntry (path) {
   let [files, tag, entry] = [readdirSync(path), null, {}]

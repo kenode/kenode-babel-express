@@ -4,8 +4,80 @@
 .screen-wrap {
   height: 100%;
   flex: 0 0 27em;
-  background: #eee;
+  overflow: hidden;
+  background-position: center;
+  background-size: cover;
   transition: flex .3s;
+  position: relative;
+
+  .bottom-block {
+    position: absolute;
+    bottom: 0;
+    padding: 35px 30px;
+    color: white;
+
+    h1 {
+
+      img {
+        width: 200px;
+      }
+    }
+  }
+
+  .img-info {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 0;
+    text-align: right;
+
+    .fa-info {
+      position: relative;
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+      margin: 0 10px 10px 0;
+      background: black;
+      border-radius: 50%;
+      color: #d5d5d5;
+      font-size: 12px;
+      line-height: 19px;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .info {
+      position: absolute;
+      bottom: 10px;
+      right: 15px;
+      width: 0;
+      padding: 4px 0 4px;
+      overflow: hidden;
+      background: black;
+      border-radius: 10px;
+      line-height: 10px;
+      text-align: center;
+      font-size: 10px;
+      font-style: italic;
+      color: #b1b1b1;
+      white-space: nowrap;
+      transition: all 0.5s ease;
+    }
+
+    &:hover {
+      cursor: default;
+      text-decoration: none;
+
+      .info {
+        width: 13em;
+
+        a {
+          cursor: default;
+          text-decoration: none;
+        }
+      }
+    }
+  }
 }
 
 @media only screen and (max-width: 958px) {

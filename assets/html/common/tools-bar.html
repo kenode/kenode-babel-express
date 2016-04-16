@@ -1,5 +1,36 @@
   <!-- tools-bar start -->
   <div id="tools-bar">
-    
+    <div class="list-group">
+      <a href="./" class="list-group-item active" data-toggle="tooltip" data-placement="right" title="首页">
+        <span class="glyphicon fa fa-home fa-lg" aria-hidden="true"> </span>
+        <span>首页</span>
+      </a>
+      <a href="./toptic.html" class="list-group-item" data-toggle="tooltip" data-placement="right" title="专题">
+        <span class="glyphicon fa fa-th-list" aria-hidden="true"> </span>
+        <span>专题</span>
+      </a>
+    </div>
+
+    <div class="list-group">
+{% if auth %}
+      <a href="./setting.html" class="list-group-item" data-toggle="tooltip" data-placement="right" title="设置">
+        <span class="glyphicon fa fa-cogs" aria-hidden="true"> </span>
+        <span>设置</span>
+      </a>
+      <a href="./sign-out.html" class="list-group-item" data-toggle="tooltip" data-placement="right" title="退出">
+        <span class="glyphicon fa fa-sign-out" aria-hidden="true"> </span>
+        <span>退出</span>
+      </a>
+{% else %}    
+      <a href="./sign-in.html" class="list-group-item" data-toggle="tooltip" data-placement="right" title="登录">
+        <span class="glyphicon fa fa-sign-in" aria-hidden="true"> </span>
+        <span>登录</span>
+      </a>
+      <a href="./sign-up.html" class="list-group-item" data-toggle="tooltip" data-placement="right" title="注册">
+        <span class="glyphicon fa fa-user" aria-hidden="true"> </span>
+        <span>注册</span>
+      </a>
+{% endif %}
+    </div>
   </div>
   <!-- tools-bar end -->

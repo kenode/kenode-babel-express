@@ -12,6 +12,14 @@ body,
 }
 
 
+
+body {
+  background: #fff;
+  transition: background 1.5s ease;
+  font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+
+
 .wraper {
   display: flex;
   flex: 1;

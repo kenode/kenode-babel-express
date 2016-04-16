@@ -2,16 +2,93 @@
 //------------------------------------
 
 #tools-bar {
-	height: 100%;
+  height: 100%;
   background: #666;
   flex: 0 0 13em;
   transition: all .3s;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+
+  .list-group {
+
+    &:last-child {
+      margin-bottom: 10px;
+      text-align: center;
+
+      a {
+        color: #ccc;
+        padding: 6px 15px;
+        text-align: left;
+
+        &:hover {
+          color: #fff;
+          background: inherit;
+        }
+
+        &:first-child {
+
+          span:first-child {
+            margin-left: 0;
+          } 
+        }
+
+        span{
+
+          &.fa {
+             font-size: 1.1em;
+          }
+
+          &:last-child {
+            margin-left: 4px;
+          } 
+        }
+      }
+    }
+
+    .list-group-item {
+      border: 0;
+      background-color: #666;
+      color: #eee;
+      padding: 12px 15px;
+      margin-bottom: 0px;
+    
+      &:first-child {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+
+        span:first-child {
+          margin-left: -2px;
+        } 
+      }
+
+      &:last-child {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      &:hover {
+        background-color: #999;
+        color: #eee;
+        border: 0;
+      }
+
+      &.active {
+        background: #337ab7;
+      }
+
+    }
+  }
   
 }
 
 @media only screen and (max-width: 1334px) {
   #tools-bar {
     flex: 0 0 3.5em;
+
+    .list-group-item span:not(.glyphicon) {
+      display: none;
+    }
   }
 }
 
