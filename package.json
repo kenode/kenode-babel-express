@@ -4,6 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "pm2 start app.js --name \"kenode-babel-express\" --interpreter babel-node",
+    "delete": "pm2 stop kenode-babel-express && pm2 delete kenode-babel-express",
+    "restart": "pm2 restart kenode-babel-express",
+    "build": "gulp build",
+    "dev": "gulp dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
