@@ -7,14 +7,16 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  position: relative;
 
   .navbar-top {
     width: 100%;
-    height: 48px;
-    height: 45px\9\0;
+    height: 44px;
     border-bottom: 2px #eee solid;
     display: flex;
     justify-content: space-between;
+    position: absolute;
+
 
     .nav-group {
       margin: 0 10px;
@@ -25,7 +27,6 @@
       a {
         display: inline-block;
         padding: 12px 14px;
-        padding: 12px 14px 13px\9\0;
         border-bottom: 2px #eee solid;
         color: #999;
         text-decoration: none;
@@ -43,17 +44,31 @@
       }
 
       @-moz-document url-prefix(){ /* 仅firefox 识别 */
-        a { 
-          padding: 13px 14px 14px;
+        
+      }
+    }
+
+    @media screen\0 {
+      & {
+        height: 46px;
+        overflow: hidden;
+      
+        .nav-group {
+          
+          a, 
+          a:hover, 
+          a.active {
+            border-bottom: 0;
+          }
         }
       }
-
-      /*@media screen and (-ms-high-contrast:active), (-ms-high-contrast:none) {
-        a { 
-          padding: 13px 14px 14px;
-        }
-      }*/
     }
+
+    /*@media screen and (-ms-high-contrast:active), (-ms-high-contrast:none) {
+      & {
+        height: 45px;
+      }
+    }*/
 
     .menu {
 
@@ -77,18 +92,24 @@
 
   .body-inner {
     width: 100%;
-    height: 100%;
+    height: auto;
     overflow-y: auto;
-    /*text-align: center;*/
     padding: 20px;
+    position: absolute;
+    top: 45px;
+    bottom: 0;
 
     .bodyer {
-      /*margin: auto;*/
+      margin: 0;
       max-width: 748px;
       min-width: 280px;
-      background: #eee;
       min-height: 500px;
       transition: all .3s;
+      justify-content: center;
+
+      &.center {
+        margin: auto;
+      }
     }
   }
 }

@@ -34,7 +34,9 @@ const vendor = {
     'node_modules/bootstrap/dist/js/bootstrap.js',
     'node_modules/lodash/lodash.js',
     'node_modules/react/dist/react.js',
-    'node_modules/react-dom/dist/react-dom.js'
+    'node_modules/react-dom/dist/react-dom.js',
+    'node_modules/moment/moment.js',
+    'node_modules/iscroll/build/iscroll.js'
   ],
   copys: [
     'node_modules/bootstrap/dist/fonts/*.+(eot|svg|ttf|woff|woff2)',
@@ -62,7 +64,7 @@ const assets = {
     }
   },
   copys: [
-    './assets/json/**/*.json'
+    './assets/json/**/*.+(json|html)'
   ],
   html: {
     file: ['./assets/html/*.+(html|htm)']
@@ -121,7 +123,7 @@ const watch = {
   image: ['./assets/image/**/*.+(png|gif|jpg|jpeg|svg)'],
   style: ['./assets/sass/**/*.scss', './assets/sprite/**/*.png'],
   source: ['./frontend/**/*.+(js|jsx)'],
-  copys: ['./assets/json/**/*.json'],
+  copys: ['./assets/json/**/*.+(json|html)'],
   html: ['./assets/html/**/*.+(html|htm|json)']
 }
 

@@ -115,7 +115,7 @@ gulp.task('assets-copys', () => {
   return gulp.src(assets.copys, { dot: true})
              .pipe(gulp.dest( file => {
                let filePath = file.path.toLowerCase()
-               if (/\.(json)$/.test(filePath)) {
+               if (/\.(json|html)$/.test(filePath)) {
                  return paths.json
                }
                if (/\.(js|js.map)$/.test(filePath)) {

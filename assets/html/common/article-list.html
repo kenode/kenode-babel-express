@@ -1,0 +1,28 @@
+<!-- article-list start -->
+        <div class="article-list">
+          <div class="loading">
+            <i class="fa fa-refresh fa-spin fa-4x" aria-hidden="true"></i>
+          </div>
+          <ul class="list-group">
+{% for item in article %}          
+            <li class="list-group-item">
+              <a href="{{ item.link }}" class="wrap-img" target="_blank"><img src="{{ item.img }}"></a>
+              <div>
+                <p class="list-top">三个月前</p>
+                <h4 class="title">
+                  <a href="{{ item.link }}" target="_blank">{{ item.title }}</a>
+                </h4>
+                <div class="list-foot">
+                  <span>阅读 1764</span>
+                  <span> · 评论 8</span>
+                  <span> · 喜欢 46</span>
+                </div>
+              </div>
+            </li>
+{% endfor %}
+          </ul>
+          <div class="loading">
+            <i class="fa fa-refresh fa-spin fa-4x" aria-hidden="true"></i>
+          </div>
+        </div>
+        <!-- article-list end -->
