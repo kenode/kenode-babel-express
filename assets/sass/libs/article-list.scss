@@ -1,11 +1,10 @@
 //sass style
 //------------------------------------
 
-
 .article-list {
   min-width: 280px;
   max-width: 748px;
-  padding-bottom: 30px;
+  padding-bottom: 1px;
 
   .list-group {
 
@@ -53,6 +52,7 @@
 
             &:hover {
               color: #333;
+              text-decoration: none;
             }
           }
         }
@@ -71,7 +71,9 @@
 
   .loading {
     text-align: center;
+    margin-top: 10px;
     color: #999;
     display: none;
+    transition: all .8s;
   }
 }

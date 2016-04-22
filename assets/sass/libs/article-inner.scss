@@ -1,0 +1,42 @@
+//sass style
+//------------------------------------
+
+.article-inner {
+  min-width: 280px;
+  max-width: 748px;
+  padding-bottom: 20px;
+
+  .show-title {
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .meta-top {
+    color: #999;
+  }
+
+  .show-content {
+    margin: 20px 0;
+  }
+  
+}
+
+@media only screen and (max-width: 768px) {
+  .article-inner {
+
+    .show-title {
+      font-size: 200%;
+    }
+  }
+}
+
+@media only screen and (max-width: 418px) {
+  .article-inner {
+    padding: 0 15px 20px;
+
+    .show-title {
+      text-align: left;
+    }
+  }
+}

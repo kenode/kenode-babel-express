@@ -36,7 +36,8 @@ const vendor = {
     'node_modules/react/dist/react.js',
     'node_modules/react-dom/dist/react-dom.js',
     'node_modules/moment/moment.js',
-    'node_modules/iscroll/build/iscroll.js'
+    'node_modules/iscroll/build/iscroll.js',
+    'node_modules/iscroll/build/iscroll-probe.js'
   ],
   copys: [
     'node_modules/bootstrap/dist/fonts/*.+(eot|svg|ttf|woff|woff2)',
