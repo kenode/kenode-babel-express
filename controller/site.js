@@ -1,9 +1,10 @@
-'use strict';
+//'use strict';
+
+const Index = (req, res, next) => {
+  res.end('hello')
+}
+
 
 export default {
-
-  Index: (req, res, next) => {
-    res.end('hello')
-  }
-
+  Index
 }

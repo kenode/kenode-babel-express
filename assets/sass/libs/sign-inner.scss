@@ -1,0 +1,105 @@
+//sass style
+//------------------------------------
+
+.sign-inner {
+  padding: 125px 0 50px;
+  text-align: center;
+  margin: auto;
+  max-width: 748px;
+
+  h1 {
+
+    div {
+      margin: 0 auto;
+      width: 200px;
+      height: 70px;
+      display: block;
+      background: url('../img/logo2-200.png');
+    }
+  }
+
+  h3 {
+    color: #d87401;
+    font-weight: bold;
+  }
+
+  .title {
+    margin: 70px auto 50px;
+    border-bottom: 1px solid #eeeeee;
+    color: #b1b1b1;
+    margin-top: 40px;
+
+    span {
+      position: relative;
+      top: 10px;
+      padding: 0 30px;
+      background: white;
+
+      a {
+        color: #b1b1b1;
+        text-decoration: none;
+        font-weight: bold;
+
+        &:hover {
+          color: #666;
+        }
+
+        &.active {
+          color: #333;
+        }
+      }
+    }
+  }
+
+  .container {
+    width: 100%;
+
+    .input-group {
+      padding: 5px 0;
+      max-width: 300px;
+      margin: auto;
+
+      .input-group-addon {
+        background-color: #fff;
+      }
+
+      .form-control {
+        height: 42px;
+      }
+
+      .btn {
+        border-radius: 4px;
+      }
+    }
+
+    .btn-group {
+      margin-top: 8px;
+      display: block;
+    }
+
+    .control-group {
+      width: 100%;
+      max-width: 300px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+
+      a {
+        padding-top: 7px;
+        color: #999;
+
+        &:hover {
+          color: #666;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+}
+
+@media only screen and (max-width: 418px) {
+  .sign-inner {
+    padding-top: 0;
+  }
+}

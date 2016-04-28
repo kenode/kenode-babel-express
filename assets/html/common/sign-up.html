@@ -1,0 +1,21 @@
+{% extends 'sign-inner.html' %}
+
+{% block sign_inner %}
+            <form class="form-horizontal">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                <input class="form-control" type="text" name="email" placeholder="您的电子邮件">
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-unlock-alt fa-fw"></i></span>
+                <input class="form-control" type="password" name="password" placeholder="填写密码">
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
+                <input class="form-control" type="password" name="repassword" placeholder="确认密码">
+              </div>
+              <div class="input-group btn-group">
+                <button type="submit" class="btn btn-success btn-lg btn-block" data-loading-text="验证中...">注册</button>
+              </div>
+            </form>
+{% endblock %}

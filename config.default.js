@@ -29,5 +29,12 @@ export default {
     category: 'kenode_demo',
     format: ':method :url :status',
     level: 'auto'
+  },
+
+  // sign
+  sign: {
+    sign_in: '/sign-in',
+    sign_up: '/sign-up',
+    sign_forget: '/sign-forget'
   }
 }

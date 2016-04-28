@@ -76,4 +76,15 @@
     display: none;
     transition: all .8s;
   }
+
+  .load-more {
+    text-align: center;
+    margin: 10px 0 20px;
+    color: #999;
+    transition: all .8s;
+
+    .btn {
+      border-radius: 0;
+    }
+  }
 }

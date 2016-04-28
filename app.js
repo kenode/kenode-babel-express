@@ -19,7 +19,9 @@ import errorhandler from 'errorhandler'
 import URL from 'url'
 import logger from './common/logger'
 import './middlewares/mongoose_log' // 打印 mongodb 查询日志
+import cors from 'cors'
 import webRouter from './web_router'
+import apiRouterV1 from './api_router_v1'
 import userProxy from './proxy/user'
 
 const [app, RedisStore, LocalStrategy, staticDir, urlInfo] = [
@@ -98,6 +100,7 @@ app.use(express.static(staticDir))
 
 // routers
 app.use('/', webRouter)
+app.use('/api/v1', cors(), apiRouterV1)
 
 // 404
 app.use('*', (req, res) => {

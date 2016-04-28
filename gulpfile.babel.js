@@ -77,7 +77,7 @@ gulp.task('vendor-copys', () => {
 
 // IE-Blocker
 gulp.task('ie-blocker', () => {
-  return gulp.src(vendor.ieblock, { dot: true})
+  return gulp.src(vendor.ieblock, { dot: true })
              .pipe(gulp.dest(paths.base + '/ie-blocker'))
 })
 
@@ -186,7 +186,7 @@ gulp.task('compile-rev', () => {
                let viewsObj = { style: {}, entry: {} }
                _.mapKeys(_manifest, (val, key) => {
                  let [_key, _val] = [
-                   key.replace(/(css|js)(\/)(\w+)(\.min\.)(css|js)/, '$3'),
+                   key.replace(/(css|js)(\/)([\w\-]+)(\.min\.)(css|js)/, '$3'),
                    val.replace(/(css|js)(\/)([\w\-]+)(\.min\.)(css|js)/, '$3')
                  ]
                  if (/^css\//.test(key)) {
@@ -196,6 +196,10 @@ gulp.task('compile-rev', () => {
                    viewsObj.entry[_key] = _val
                  }
                })
+               let layout = readFileSync(paths.views + '/common/layout.html', 'utf-8')
+               layout = layout.replace('css/vendor.min.css', _manifest['css/vendor.min.css'])
+               layout = layout.replace('js/vendor.min.js', _manifest['js/vendor.min.js'])
+               writeFileSync(paths.views + '/common/layout.html', layout)
                writeFileSync(paths.views + '/views.json', JSON.stringify(viewsObj, null, 2))
                del.sync(manifest, { dot: true })
              })

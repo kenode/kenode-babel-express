@@ -1,0 +1,13 @@
+{
+  "title": "Kenode-Babel-Express",
+  "screen": {
+    "background": "../img/6YxPs9jXumuuY4EAsAA1.jpg"
+  },
+  "style": "sign-up",
+  "entry": "sign-up",
+  "sign": {
+    "sign_in": "./sign-in.html",
+    "sign_up": "./sign-up.html",
+    "active": "sign-up"
+  }
+}

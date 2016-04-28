@@ -1,0 +1,20 @@
+<!-- sign-inner start -->
+        <div class="sign-inner">
+          <h1><div class="logo"></div></h1>
+          <h3>交流故事，沟通想法</h3>
+          <h4 class="title">
+            <span>
+            {% if sign.active == 'sign-forget' %}
+              <b>密码找回</b>
+            {% else %}
+              <a{% if sign.active == 'sign-in' %} class="active"{% endif %} href="{{ sign.sign_in }}">登录</a>
+              <b>·</b>
+              <a{% if sign.active == 'sign-up' %} class="active"{% endif %} href="{{ sign.sign_up }}">注册</a>
+            {% endif %}
+            </span>
+          </h4>
+          <div class="container {{ sign.active }}">
+            {% block sign_inner %}{% endblock %}
+          </div>
+        </div>
+        <!-- sign-inner end -->

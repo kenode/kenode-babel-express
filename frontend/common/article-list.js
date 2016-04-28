@@ -2,33 +2,46 @@
 
 import win from './init-window'
 
-let [myScroll, ltr_time, ltr_limit, ltr_start, pullUpFlag, pullDownFlag] = [
+let [myScroll, ltr_time, ltr_limit, ltr_start, pullUpFlag, pullDownFlag, loadingDom, moreDom] = [
   ,
   moment().format('x'),
   10,
   10,
   0,
-  0
+  0,
+  '<div class=\"loading\"><i class=\"fa fa-refresh fa-spin fa-1x\" aria-hidden=\"true\"><\/i> 正在加载中 ...<\/div>',
+  '<div class=\"load-more\"><button type=\"button\" class=\"btn btn-info btn-lg\" data-loading-text=\"Loading...\">点击查看更多<\/button><\/div>'
 ]
 
 const scrollRefresh = () => {
-  mobileScroll()
-  /*if (!win.IsMobile) {
+  if (win.IsMobile) {
     mobileScroll()
   }
   else {
-    desktopScroll()
-  }*/
+    $('.article-list .list-group').after(moreDom)
+    $('.article-list .load-more .btn').on('click', loadMoreHandle)
+  }
+}
+
+const loadMoreHandle = e => {
+  let $btn = $(e.target).button('loading')
+  console.log('limit: %d-%d', ltr_start, ltr_start + ltr_limit - 1)
+  ltr_start += ltr_limit
+  setTimeout(() => {
+    $btn.button('reset')
+  }, 1000)
+  
 }
 
 const mobileScroll = () => {
   $('.bodyer-wrap .body-inner').css('overflow', 'hidden')
+  $('.article-list .list-group').before(loadingDom).after(loadingDom)
   myScroll = new IScroll('.body-inner', { 
-    probeType: 3,
-    momentum: true, // 关闭惯性滑动
+    probeType: 2,
+    //momentum: true, // 关闭惯性滑动
     scrollbars: true, // 滚动条可见
     mouseWheel: true, // 鼠标滚轮开启
-    interactiveScrollbars: true, // 滚动条可拖动
+    //interactiveScrollbars: true, // 滚动条可拖动
     fadeScrollbars: true, // 滚动条渐隐
     click: true, // 屏幕可点击
     //shrinkScrollbars: 'scale', // 当滚动边界之外的滚动条是由少量的收缩
@@ -85,6 +98,7 @@ const scrollEndHandle = () => {
   }
 }
 
+/*
 const desktopScroll = () => {
   $('.body-inner').on('scroll', e => {
     let [target, _ltr_time] = [
@@ -104,7 +118,7 @@ const desktopScroll = () => {
     }
   })
 }
-
+*/
 
 const getArticleList = (start, end) => {
   console.log('limit: %d-%d', start, end)

@@ -1,6 +1,7 @@
 {% extends 'common/layout-index.html' %}
 
-
+{% block style %}{{ style }}{% endblock %}
+{% block entry %}{{ entry }}{% endblock %}
 {% block bodyer %}
         <!-- bodyer start -->
         {% include 'common/article-list.html' %}

@@ -4,7 +4,6 @@ const IsMobile = /ipad|iphone os|midp|rv:1.2.3.4|ucweb|android|windows ce|window
                  .test(navigator.userAgent)
 
 const Init = () => {
-  console.log('init')
   IEBlocker()
   MobileMenu()
   if (!IsMobile) {
