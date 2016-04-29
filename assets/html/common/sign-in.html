@@ -1,7 +1,7 @@
 {% extends 'sign-inner.html' %}
 
 {% block sign_inner %}
-            <form class="form-horizontal">
+            <form class="form-horizontal" action="{{ action }}">
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
                 <input class="form-control" type="text" name="username" placeholder="用户名/电子邮件">

@@ -1,0 +1,63 @@
+//sass style
+//------------------------------------
+
+
+@-webkit-keyframes msg-show {
+  0% {
+    height: 0;
+    width: 0;
+    max-height: 50px;
+    opacity: 0;
+  }
+  100% {
+    height: 100%;
+    width: 100%;
+    max-height: auto;
+    opacity: 1;
+  }
+}
+
+@keyframes msg-show {
+  0% {
+    height: 0;
+    width: 0;
+    max-height: 50px;
+    opacity: 0;
+  }
+  100% {
+    height: 100%;
+    width: 100%;
+    max-height: auto;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes msg-hide {
+  0% {
+    height: 100%;
+    width: 100%;
+    max-height: auto;
+    opacity: 1;
+  }
+  100% {
+    height: 0;
+    width: 0;
+    max-height: 50px;
+    opacity: 0;
+  }
+}
+
+@keyframes msg-hide {
+  0% {
+    height: 100%;
+    width: 100%;
+    max-height: auto;
+    opacity: 1;
+  }
+  100% {
+    height: 0;
+    width: 0;
+    max-height: 50px;
+    opacity: 0;
+  }
+}

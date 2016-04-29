@@ -65,6 +65,11 @@
 
       .form-control {
         height: 42px;
+
+        &:focus {
+          -webkit-box-shadow: none;
+                  box-shadow: none;
+        }
       }
 
       .btn {
@@ -98,8 +103,20 @@
 
 }
 
+.message-wrap {
+  top: 80px;
+}
+
 @media only screen and (max-width: 418px) {
   .sign-inner {
     padding-top: 0;
+  }
+
+  .message-wrap {
+    top: 200px;
+
+    .message {
+      max-width: 300px;
+    }
   }
 }

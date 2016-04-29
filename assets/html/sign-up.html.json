@@ -9,5 +9,6 @@
     "sign_in": "./sign-in.html",
     "sign_up": "./sign-up.html",
     "active": "sign-up"
-  }
+  },
+  "action": "/json/api/sign-up-error.json"
 }
