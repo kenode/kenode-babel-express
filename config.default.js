@@ -19,8 +19,8 @@ export default {
   session_secret: 'kenode_secret',
 
   // Redis
-  resdis_host: '127.0.0.1',
-  resdis_port: 6379,
+  redis_host: '127.0.0.1',
+  redis_port: 6379,
 
   // MongoDB
   mongo_uri: 'mongodb://localhost:27017/kenode_demo',
