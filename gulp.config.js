@@ -27,17 +27,25 @@ const vendor = {
   },
   style: [
     'node_modules/bootstrap/dist/css/bootstrap.css',
-    'node_modules/font-awesome/css/font-awesome.css'
+    'node_modules/font-awesome/css/font-awesome.css',
+    //'node_modules/dropzone/dist/base.js',
+    //'node_modules/dropzone/dist/dropzone.css'
   ],
   js: [
     'node_modules/jquery/dist/jquery.js',
+    'node_modules/jquery.cookie/jquery.cookie.js',
     'node_modules/bootstrap/dist/js/bootstrap.js',
     'node_modules/lodash/lodash.js',
     'node_modules/react/dist/react.js',
     'node_modules/react-dom/dist/react-dom.js',
+    //'node_modules/react-redux/dist/react-redux.js',
+    //'node_modules/redux/dist/redux.js',
     'node_modules/moment/moment.js',
+    'node_modules/crypto-js/index.js',
     // 'node_modules/iscroll/build/iscroll.js',
-    'node_modules/iscroll/build/iscroll-probe.js'
+    'node_modules/iscroll/build/iscroll-probe.js',
+    //'node_modules/dropzone/dist/dropzone.js',
+    //'node_modules/socket.io-client/socket.io.js'
   ],
   copys: [
     'node_modules/bootstrap/dist/fonts/*.+(eot|svg|ttf|woff|woff2)',
@@ -87,7 +95,9 @@ const compile = {
   externals: {
     'lodash': '_',
     'react': 'React',
-    'react-dom': 'ReactDOM'
+    'react-dom': 'ReactDOM',
+    'crypto-js': 'CryptoJS',
+    //'socketio': 'socket.io'
   },
   module: {
     loaders: [
@@ -107,7 +117,7 @@ const compile = {
     ]
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin()
+    //new webpack.optimize.UglifyJsPlugin()
   ],
   //devtool: 'source-map'
 }

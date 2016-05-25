@@ -5,6 +5,10 @@
   },
   "style": "index",
   "entry": "index",
+  "sign": {
+    "sign_in": "./sign-in.html",
+    "sign_up": "./sign-up.html"
+  },
   "article": [
       {
         "id": "570f610d5de77e2056cd9f8a",

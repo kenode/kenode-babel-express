@@ -18,7 +18,7 @@ const gotoTop = () => {
   })
 }
 
-const scrollHandle = (e) => {
+const scrollHandle = e => {
   $('.goto-top').css('display', e.target.scrollTop > 100 ? 'block' : 'none')
 }
 

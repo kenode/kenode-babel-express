@@ -20,9 +20,12 @@ import URL from 'url'
 import logger from './common/logger'
 import './middlewares/mongoose_log' // 打印 mongodb 查询日志
 import cors from 'cors'
+import busboy from 'connect-busboy'
+import bytes from 'bytes'
 import webRouter from './web_router'
 import apiRouterV1 from './api_router_v1'
-import userProxy from './proxy/user'
+
+//import socketio from 'socket.io'
 
 const [app, RedisStore, LocalStrategy, staticDir, urlInfo] = [
   express(),
@@ -79,21 +82,18 @@ passport.serializeUser( (user, done) =>
 passport.deserializeUser( (user, done) => 
   done(null, user)
 )
-passport.use('local', new LocalStrategy({
-    usernameField: 'username',
-    passwordField: 'password'
-  }, (username, password, done) => 
-    userProxy.localStrategy({
-      username: username,
-      password: password
-    }, done)
-  )
-)
 
 // set static, dynamic helpers
 _.extend(app.locals, {
   config: config
 })
+
+// 上传设置
+app.use(busboy({
+  limits: {
+    fileSize: bytes(config.file_limit)
+  }
+}))
 
 // static
 app.use(express.static(staticDir))

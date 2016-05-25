@@ -6,6 +6,12 @@
             <span>
             {% if sign.active == 'sign-forget' %}
               <b>密码找回</b>
+            {% elseif sign.active == 'sign-username' %}
+              <b>设置用户名</b>
+            {% elseif sign.active == 'reset-pass' %}
+              <b>重设密码</b>
+            {% elseif sign.active == 'sign-info' %}
+              <b>{{ signInfo.title }}</b>
             {% else %}
               <a{% if sign.active == 'sign-in' %} class="active"{% endif %} href="{{ sign.sign_in }}">登录</a>
               <b>·</b>

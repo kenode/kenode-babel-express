@@ -24,6 +24,12 @@ function random () {
   return str
 }
 
+const format = (token) => {
+  let dd = token.match(/([a-z0-9]{8})([a-z0-9]{4})([a-z0-9]{4})([a-z0-9]{4})([a-z0-9]{12,24})$/)
+  dd.splice(0, 1)
+  return _.join(dd, '-')
+}
+
 const error = (code) => {
   let [o, e] = [
     _.find(errcode, { code: code }),
@@ -32,12 +38,13 @@ const error = (code) => {
   e.code = o.code
   e.message = o.message
   throw e
-};
+}
 
 const myError = (e) => e.code > 1000
 
 export default {
   random,
+  format,
   error,
   myError
 }

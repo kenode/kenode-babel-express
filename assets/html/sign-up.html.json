@@ -3,7 +3,7 @@
   "screen": {
     "background": "../img/6YxPs9jXumuuY4EAsAA1.jpg"
   },
-  "style": "sign-up",
+  "style": "sign-inner",
   "entry": "sign-up",
   "sign": {
     "sign_in": "./sign-in.html",

@@ -1,0 +1,16 @@
+{% extends 'sign-inner.html' %}
+
+{% block sign_inner %}
+            <form class="form-horizontal" action="{{ action }}">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                <input class="form-control" type="text" name="username" placeholder="用户名">
+              </div>
+              <div class="input-group btn-group">
+                <button type="submit" class="btn btn-primary btn-lg btn-block" data-loading-text="验证中...">确认</button>
+              </div>
+              <div class="control-group">
+                <span>请仔细填写用户名，设置后将不可修改</span>
+              </div>
+            </form>
+{% endblock %}

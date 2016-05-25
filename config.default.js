@@ -1,9 +1,13 @@
 'use strict';
 
+import path from 'path'
+
 export default {
 
   // 调试模式
   debug: true,
+
+  name: 'kBlog',
 
   // 服务主机
   host: 'localhost',
@@ -35,6 +39,38 @@ export default {
   sign: {
     sign_in: '/sign-in',
     sign_up: '/sign-up',
-    sign_forget: '/sign-forget'
-  }
+    sign_forget: '/sign-forget',
+    sign_out: '/sign-out',
+    setting: '/setting'
+  },
+
+  // admin
+  admin: {
+    username: 'admin',
+    email: 'admin@xxx.com',
+    password: '123456',
+    user_type: 9999
+  },
+
+  // user
+  reset_pass_time: 1000 * 60 * 60 * 24,
+
+  // mailer
+  mailer: {
+    host: '',
+    port: 25,
+    auth: {
+      user: '',
+      pass: ''
+    }
+  },
+
+  // 文件上传配置
+  // 注：如果填写 qn_access，则会上传到 7牛，以下配置无效
+  upload: {
+    path: '/public/upload',
+    url: '/upload'
+  },
+
+  file_limit: '1MB'
 }
