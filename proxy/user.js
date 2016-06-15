@@ -11,6 +11,7 @@ import { sendActiveMail, sendResetPassMail } from '../common/mailer'
 import config from '../config'
 import uuid from 'node-uuid'
 import validator from 'validator'
+import auth from '../middlewares/auth'
 
 const userProxy = { 
   newAndSave,
@@ -34,6 +35,7 @@ const userProxy = {
 }
 const UserProxy = Promise.promisifyAll(userProxy)
 const resetPassTime = config.reset_pass_time
+const user_info = ['email', 'uid', 'username', 'avatar', 'user_type', 'create_at', 'update_at']
 
  /**
  * 创建新用户
@@ -181,7 +183,8 @@ function removeAll (callback) {
 function localStrategy (info, callback) {
   UserProxy.loginValidAsync(info)
             .then( _doc => {
-              let user = _.pick(_doc, ['email', 'uid', 'username', 'create_at', 'update_at'])
+              let user = _.pick(_doc, user_info)
+              user.is_admin = auth.isAdmin(user.user_type)
               return callback(null, user)
             })
             .catch( err =>  callback(err) )
@@ -197,7 +200,8 @@ function signUpEmail (info, callback) {
               return UserProxy.newAndSaveAsync(Object.assign(info, { username: info.email }))
             })
             .then( doc => {
-              let user = _.pick(doc, ['email', 'uid', 'username', 'create_at', 'update_at'])
+              let user = _.pick(doc, user_info)
+              user.is_admin = auth.isAdmin(user.user_type)
               return callback(null, user)
             })
             .catch( err =>  callback(err) )
@@ -207,7 +211,8 @@ function signUpEmail (info, callback) {
 function setUsername (info, callback) {
   UserProxy.updateOneAsync({ email: info.email}, { username: info.username })
             .then( doc => {
-              let user = _.pick(doc, ['email', 'uid', 'username', 'create_at', 'update_at'])
+              let user = _.pick(doc, user_info)
+              user.is_admin = auth.isAdmin(user.user_type)
               let token = crypto.createHash('sha1').update(doc.email + doc.password + config.session_secret).digest('hex')
               sendActiveMail(user.email, Tools.format(token), user.username)
               return callback(null, user)

@@ -29,6 +29,7 @@ public
 views
 logger
 config.js
+alltags.json
 .DS_Store
 
 # Optional npm cache directory

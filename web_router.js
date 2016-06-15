@@ -28,5 +28,9 @@ router.get('/setting', auth.userRequired, controlUser.setting)
 router.post('/update-pass', auth.userRequired, policesUser.updatePass, controlUser.updatePass)
 router.post('/upload', auth.userRequired, controlUser.upload)
 router.post('/upload/:type', auth.userRequired, controlUser.upload)
+router.get('/writer', auth.userRequired, auth.adminRequired, controlUser.writerPage)
+router.post('/writer', auth.userRequired, auth.adminRequired, policesUser.writer, controlUser.writer)
+
+
 
 export default router

@@ -9,6 +9,8 @@ export default {
 
   name: 'kBlog',
 
+  siteurl: 'http://localhost:3000',
+
   // 服务主机
   host: 'localhost',
 
@@ -41,7 +43,8 @@ export default {
     sign_up: '/sign-up',
     sign_forget: '/sign-forget',
     sign_out: '/sign-out',
-    setting: '/setting'
+    setting: '/setting',
+    writer: '/writer'
   },
 
   // admin
@@ -57,11 +60,11 @@ export default {
 
   // mailer
   mailer: {
-    host: '',
+    host: 'smtp.mxhichina.com',
     port: 25,
     auth: {
-      user: '',
-      pass: ''
+      user: 'service@kenode.org',
+      pass: 'keNode2016'
     }
   },
 
@@ -72,5 +75,14 @@ export default {
     url: '/upload'
   },
 
-  file_limit: '1MB'
+  file_limit: '1MB',
+
+  // 存放文章标签文件
+  tags_file: './alltags.json',
+
+  // 微信公众号
+  wx: {
+    app_id:     'wx740bf814d4daadce',
+    app_secret: '0657ef4ffb9e22a1777993a2667481f5'
+  }
 }

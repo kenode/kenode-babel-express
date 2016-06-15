@@ -1,0 +1,9 @@
+{
+  "title": "Kenode-Babel-Express",
+  "style": "page-warning",
+  "entry": "page-base",
+  "sign": {
+    "sign_in": "./sign-in.html",
+    "sign_up": "./sign-up.html"
+  }
+}

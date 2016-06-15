@@ -14,20 +14,26 @@
 
       <div class="list-group">
   {% if auth %}
-        <a href="{{ sign.setting || './setting.html' }}" class="list-group-item" data-toggle="tooltip" data-placement="right" title="设置">
+        <a href="{{ sign.setting || './setting.html' }}" class="list-group-item{% if current == 'setting' %} active{% endif %}" data-toggle="tooltip" data-placement="right" title="设置">
           <span class="glyphicon fa fa-cogs" aria-hidden="true"> </span>
           <span>设置</span>
         </a>
+{% if auth.is_admin %}
+        <a href="{{ sign.writer || './writer.html' }}" class="list-group-item{% if current == 'writer' %} active{% endif %}" data-toggle="tooltip" data-placement="right" title="文章">
+          <span class="glyphicon fa fa-pencil" aria-hidden="true"> </span>
+          <span>文章</span>
+        </a>
+{% endif %}
         <a href="/sign-out" class="list-group-item" data-toggle="tooltip" data-placement="right" title="退出">
           <span class="glyphicon fa fa-sign-out" aria-hidden="true"> </span>
           <span>退出</span>
         </a>
   {% else %}    
-        <a href="{{ sign.sign_in }}" class="list-group-item" data-toggle="tooltip" data-placement="right" title="登录">
+        <a href="{{ sign.sign_in }}" class="list-group-item{% if sign.active == 'sign-in' %} active{% endif %}" data-toggle="tooltip" data-placement="right" title="登录">
           <span class="glyphicon fa fa-sign-in" aria-hidden="true"> </span>
           <span>登录</span>
         </a>
-        <a href="{{ sign.sign_up }}" class="list-group-item" data-toggle="tooltip" data-placement="right" title="注册">
+        <a href="{{ sign.sign_up }}" class="list-group-item{% if sign.active == 'sign-up' %} active{% endif %}" data-toggle="tooltip" data-placement="right" title="注册">
           <span class="glyphicon fa fa-user" aria-hidden="true"> </span>
           <span>注册</span>
         </a>

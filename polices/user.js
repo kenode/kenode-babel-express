@@ -22,6 +22,35 @@ const updatePass = (req, res, next) => {
   return next(data)
 }
 
+const writer = (req, res, next) => {
+  let data = {
+    uid: req.user.uid || '',
+    draft: req.query.draft,
+    post: req.query.post,
+    type: req.body.type,
+    titlename: req.body.title,
+    tags: req.body.tags,
+    content: req.body.content,
+    isnote: req.body.isnote
+  }
+  if (data.draft && data.draft.length !== 24) {
+    return res.json({ code: 1034, data: null })
+  }
+  if (data.post && data.post.length !== 24) {
+    return res.json({ code: 1035, data: null })
+  }
+  if (data.type === 'publish') {
+    if (validator.isNull(data.titlename)) {
+      return res.json({ code: 1032, data: null })
+    }
+    if (validator.isNull(data.content)) {
+      return res.json({ code: 1033, data: null })
+    }
+  }
+  return next(data)
+}
+
 export default {
-  updatePass
+  updatePass,
+  writer
 }

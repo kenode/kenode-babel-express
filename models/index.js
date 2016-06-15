@@ -4,7 +4,8 @@ import mongoose from 'mongoose'
 import util from 'util'
 import config from '../config'
 import logger from '../common/logger'
-import userDao from './user'
+//import userDao from './user'
+//import draftDao from './draft'
 
 mongoose.connect(config.mongo_uri, {
   server: { poolSize: 20 }
@@ -16,3 +17,5 @@ mongoose.connect(config.mongo_uri, {
 })
 
 export userDao from './user'
+export draftDao from './draft'
+export postDao from './post'

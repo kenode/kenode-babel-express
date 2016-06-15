@@ -1,0 +1,17 @@
+{% extends 'common/layout.html' %}
+
+{% block style %}{{ style }}{% endblock %}
+{% block entry %}{{ entry }}{% endblock %}
+{% block wraper %}
+{% include 'common/tools-bar.html' %}
+  <div class="bodyer-wrap">
+    {% include 'common/navbar-top.html' %}
+    <div class="writer-wrap" id="writer">
+      <input name="title" type="hidden" value='{{ titlename }}'>
+      <input name="tags" type="hidden" value='{{ tags }}'>
+      <textarea name="alltags" style="display: none;">{{ alltags }}</textarea>
+      <textarea name="content" style="display: none;">{{ content }}</textarea>
+      <input type="hidden" name="submit" value='{{ submit }}'>
+    </div>
+  </div>
+{% endblock %}

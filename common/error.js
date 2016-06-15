@@ -120,5 +120,29 @@ export default [
   {
     code: 1029,
     message: '文件大小超出限制，最大只允许 $1'
+  },
+  {
+    code: 1030,
+    message: '您不是管理员，不允许访问'
+  },
+  {
+    code: 1031,
+    message: '您不是系统管理员，没有操作权限'
+  },
+  {
+    code: 1032,
+    message: '文章标题不能为空'
+  },
+  {
+    code: 1033,
+    message: '文章正文不能为空'
+  },
+  {
+    code: 1034,
+    message: '此草稿不存在或已删除'
+  },
+  {
+    code: 1035,
+    message: '此文章不存在或已删除'
   }
 ]

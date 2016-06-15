@@ -1,7 +1,6 @@
 'use strict';
 
-import config from '../config'
-import views from '../views/views.json'
+import view from '../middlewares/view'
 import Passport from 'passport'
 import Promise from 'bluebird'
 import userProxy from '../proxy/user'
@@ -20,13 +19,13 @@ const signInPage = (req, res, next) => {
     }
     return res.redirect('/')
   }
-  res.render('sign-in', {
-    title: 'Kenode-Babel-Express',
-    style: views.style['sign-inner'],
-    entry: views.entry['sign-in'],
-    sign: Object.assign(config.sign, { active: 'sign-in' }),
-    auth: req.user
-  })
+  let _assign = view.assign({
+                  title: '$1 - 登录',
+                  style: 'sign-inner',
+                  entry: 'sign-in',
+                  sign: 'sign-in'
+                }, req.user)
+  res.render('sign-in', _assign)
 }
 
 // 注册页面
@@ -37,13 +36,13 @@ const signUpPage = (req, res, next) => {
     }
     return res.redirect('/')
   }
-  res.render('sign-up', {
-    title: 'Kenode-Babel-Express',
-    style: views.style['sign-inner'],
-    entry: views.entry['sign-up'],
-    sign: Object.assign(config.sign, { active: 'sign-up' }),
-    auth: req.user
-  })
+  let _assign = view.assign({
+                  title: '$1 - 注册',
+                  style: 'sign-inner',
+                  entry: 'sign-up',
+                  sign: 'sign-up'
+                }, req.user)
+  res.render('sign-up', _assign)
 }
 
 // 密码找回页面
@@ -51,12 +50,13 @@ const signForgetPage = (req, res, next) => {
   if (req.user && req.route.path === '/sign-forget') {
     return res.redirect('/')
   }
-  res.render('sign-forget', {
-    title: 'Kenode-Babel-Express',
-    style: views.style['sign-inner'],
-    entry: views.entry['sign-forget'],
-    sign: Object.assign(config.sign, { active: 'sign-forget' })
-  })
+  let _assign = view.assign({
+                  title: '$1 - 密码找回',
+                  style: 'sign-inner',
+                  entry: 'sign-forget',
+                  sign: 'sign-forget'
+                }, req.user)
+  res.render('sign-forget', _assign)
 }
 
 // 登出操作
@@ -67,18 +67,6 @@ const signOut = (req, res) => {
 
 // 登录操作 -> Local
 const signInLocal = (data, req, res, next) => {
-  /*Passport.authenticate('local', {
-    badRequestMessage: '505 error'
-  }, (err, user, info) => {
-    if (err) { return next(err) }
-    if (!user) {
-      return res.json({ code: 1003, data: null })
-    }
-    req.logIn(user, err => {
-      if (err) { return next(err) }
-      return res.json({ code: 0, data: user })
-    })
-  })(req, res, next)*/
   UserProxy.localStrategyAsync(data)
             .then( user => {
               req.logIn(user, err => {
@@ -112,12 +100,13 @@ const setUsernamePage = (req, res, next) => {
   if (!req.user) {
     return res.redirect('/sign-in')
   }
-  res.render('sign-username', {
-    title: 'Kenode-Babel-Express',
-    style: views.style['sign-inner'],
-    entry: views.entry['sign-username'],
-    sign: Object.assign(config.sign, { active: 'sign-username' })
-  })
+  let _assign = view.assign({
+                  title: '$1 - 密码找回',
+                  style: 'sign-inner',
+                  entry: 'sign-username',
+                  sign: 'sign-username'
+                }, req.user)
+  res.render('sign-username', _assign)
 }
 
 // 设置用户名
@@ -137,15 +126,15 @@ const setUsername = (data, req, res, next) => {
 
 // 激活邮件
 const activeAccount = (data, req, res, next) => {
-  let assignData = {
-    title: 'Kenode-Babel-Express',
-    style: views.style['sign-inner'],
-    entry: views.entry['page-base'],
-    sign: Object.assign(config.sign, { active: 'sign-info' })
-  }
+  let _assign = view.assign({
+                  title: '$1 - 激活邮箱',
+                  style: 'sign-inner',
+                  entry: 'page-base',
+                  sign: 'sign-info'
+                }, req.user)
   UserProxy.activeAccountAsync(data)
             .then( user => {
-              return res.render('sign-info', Object.assign(assignData, {
+              return res.render('sign-info', Object.assign(_assign, {
                 signInfo: {
                   title: '激活邮箱',
                   content: '帐号已被激活，请登录'
@@ -154,7 +143,7 @@ const activeAccount = (data, req, res, next) => {
             })
             .catch(Tools.myError, err => {
               let errInfo = _.find(errcode, { code: err.code })
-              return res.render('sign-info', Object.assign(assignData, {
+              return res.render('sign-info', Object.assign(_assign, {
                 signInfo: {
                   title: '激活邮箱',
                   content: errInfo.message
@@ -178,27 +167,30 @@ const signForget = (data, req, res, next) => {
 
 // 重设密码页面
 const resetPass = (data, req, res, next) => {
-  let assignData = {
-    title: 'Kenode-Babel-Express',
-    style: views.style['sign-inner']
-  }
+  let _assign
   UserProxy.resetPassAsync(data)
             .then( user => {
-              return res.render('reset-pass', Object.assign(assignData, {
-                entry: views.entry['reset-pass'],
-                sign: Object.assign(config.sign, { active: 'reset-pass' })
-              }))
+              _assign = view.assign({
+                  title: '$1 - 重设密码',
+                  style: 'sign-inner',
+                  entry: 'reset-pass',
+                  sign: 'reset-pass'
+                }, req.user)
+              return res.render('reset-pass', _assign)
             })
             .catch(Tools.myError, err => {
               let errInfo = _.find(errcode, { code: err.code })
-              return res.render('sign-info', Object.assign(assignData, {
-                entry: views.entry['page-base'],
-                sign: Object.assign(config.sign, { active: 'sign-info' }),
-                signInfo: {
-                  title: '重置密码',
-                  content: errInfo.message
-                }
-              }))
+              _assign = view.assign({
+                  title: '$1 - 重设密码',
+                  style: 'sign-inner',
+                  entry: 'page-base',
+                  sign: 'sign-info',
+                  signInfo: {
+                    title: '重置密码',
+                    content: errInfo.message
+                  }
+                }, req.user)
+              return res.render('sign-info', _assign)
             })
            .catch( err =>  next(err) )
 }
