@@ -60,11 +60,11 @@ export default {
 
   // mailer
   mailer: {
-    host: 'smtp.mxhichina.com',
+    host: '',
     port: 25,
     auth: {
-      user: 'service@kenode.org',
-      pass: 'keNode2016'
+      user: '',
+      pass: ''
     }
   },
 
@@ -82,7 +82,7 @@ export default {
 
   // 微信公众号
   wx: {
-    app_id:     'wx740bf814d4daadce',
-    app_secret: '0657ef4ffb9e22a1777993a2667481f5'
+    app_id:     '',
+    app_secret: ''
   }
 }
