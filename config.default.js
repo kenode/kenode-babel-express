@@ -60,7 +60,7 @@ export default {
 
   // mailer
   mailer: {
-    host: 'smtp.mxhichina.com',
+    host: '',
     port: 25,
     auth: {
       user: 'service@xxx.com',
