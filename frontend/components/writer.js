@@ -24,7 +24,7 @@ class Writer extends Component {
     this.state = {
       _id: undefined,
       title: '',
-      _tags: [],
+      tags: [],
       content: '',
       isnote: false,
       type: 'saved',
@@ -78,9 +78,9 @@ class Writer extends Component {
             <h2>{h2Name}</h2>
             <TitleInput title={this.state.title}
                         refreshState={this._refreshState.bind(this, 'title')} />
-            <TagsInput tags={this.state._tags} 
+            <TagsInput tags={this.state.tags} 
                        allTags={this.state.alltags} 
-                       refreshState={this._refreshState.bind(this, '_tags')} />
+                       refreshState={this._refreshState.bind(this, 'tags')} />
             <Editor output="markdown"
                     content={this.state.content} 
                     refreshState={this._refreshState.bind(this, 'content')} />
@@ -180,7 +180,7 @@ class Writer extends Component {
         WriterStore.set('save', '1')
         return
       }
-      if (_.toArray(this.props.item.tags) !== this.state._tags) {
+      if (_.toArray(this.props.item.tags) !== this.state.tags) {
         WriterStore.set('save', '1')
         return
       }
