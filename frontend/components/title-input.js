@@ -15,7 +15,7 @@ class TitleInput extends Component {
                name="title" 
                ref="title" 
                type="text"
-               defaultValue={this.props.title} 
+               value={this.props.title} 
                onChange={this._onChange.bind(this)}
                placeholder="来，取个响亮的标题吧！" />
       </div>
@@ -31,11 +31,11 @@ class TitleInput extends Component {
 TitleInput.propTypes = {
   title: PropTypes.string,
   refreshState: PropTypes.func
-};
+}
 
 TitleInput.defaultProps = {
   title: undefined,
   refreshState: () => null
-};
+}
 
 export default TitleInput

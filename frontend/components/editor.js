@@ -6,6 +6,8 @@ import cNames from 'classnames'
 import Markdown from '../../common/markdown'
 import EditorTopbar from './editor-topbar'
 import EditorModbar from './editor-modbar'
+import OperateConfirm from './operate-confirm'
+import Upload from './upload'
 
 class Editor extends Component {
 
@@ -16,6 +18,15 @@ class Editor extends Component {
       mode: 'split',
       isFullScreen: false,
       name: this.props.name,
+      confirm: {
+        key: '',
+        name: '',
+        content: '',
+        visible: false,
+        width: 600,
+        okbtn: true,
+        closebtn: true
+      },
       result: Markdown.render(this.props.content)
     }
   }
@@ -29,6 +40,17 @@ class Editor extends Component {
     this.textControl = findDOMNode(this.refs.editor)
     this.previewControl = findDOMNode(this.refs.preview)
     this.textControl.value = this.props.content || ''
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (nextProps === this.props) {
+      return
+    }
+    this.textControl.value = nextProps.content || ''
+    let htmlStr = Markdown.render(this.textControl.value)
+    //let outputStr = nextProps.output === 'markdown' ? this.textControl.value : htmlStr
+    //this.props.refreshState(outputStr)
+    this.setState({ result: htmlStr })
   }
 
   render () {
@@ -56,6 +78,14 @@ class Editor extends Component {
              id="preview"
              className={previewClass}
              dangerouslySetInnerHTML={{ __html: this.state.result }} />
+        <OperateConfirm name={this.state.confirm.name}
+                          tag={this.state.confirm.key}
+                          content={this.state.confirm.content}
+                          visible={this.state.confirm.visible}
+                          width={this.state.confirm.width}
+                          okbtn={this.state.confirm.okbtn}
+                          closebtn={this.state.confirm.closebtn}
+                          refreshState={this._refreshState.bind(this)} />
       </div>
     )
   }
@@ -90,7 +120,20 @@ class Editor extends Component {
         break
       }
       case 'picture': { 
-        this._preInputText("![alt](http://www.yourlink.com)", 2, 5)
+        //this._preInputText("![alt](http://www.yourlink.com)", 2, 5)
+        this.setState({
+          confirm: {
+            key: tag,
+            name: '插入图片',
+            content: (
+              <Upload type="image" refreshState={this._insertImage.bind(this)} />
+            ),
+            visible: true,
+            width: 400,
+            okbtn: false,
+            closebtn: false
+          }
+        })
         break
       }
       case 'ol': { 
@@ -136,6 +179,45 @@ class Editor extends Component {
     let outputStr = this.props.output === 'markdown' ? this.textControl.value : htmlStr
     this.props.refreshState(outputStr)
     this.setState({ result: htmlStr })
+  }
+
+  _refreshState (key, confirm) {
+    if (!confirm) {
+      this.setState({
+        confirm: {
+          key: undefined,
+          name: '',
+          content: '',
+          visible: false,
+          width: 600,
+          okbtn: true,
+          closebtn: true
+        }
+      })
+      return
+    }
+    switch (key) {
+      case 'picture':
+        
+        break
+      default:
+        break
+    }
+  }
+
+  _insertImage (file) {
+    this._preInputText("![alt](" + file + ")", 2, 5)
+    this.setState({
+      confirm: {
+        key: undefined,
+        name: '',
+        content: '',
+        visible: false,
+        width: 600,
+        okbtn: true,
+        closebtn: true
+      }
+    })
   }
 }
 

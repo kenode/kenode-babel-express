@@ -13,6 +13,8 @@ const draftSchema = new Schema({
   content: { type: String },  // 正文
   post_id: { type: ObjectId },  // 对应发布的文章ID
   user_id: { type: ObjectId },  // 所属用户ID
+  recovery: { type: Boolean, default: false },  // 是否回收
+  recover_at: { type: Date, default: Date.now },  // 回收时间
   create_at: { type: Date, default: Date.now },  // 帐号创建时间
   update_at: { type: Date, default: Date.now }  // 帐号修改时间
 })

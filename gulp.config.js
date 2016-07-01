@@ -28,6 +28,8 @@ const vendor = {
   style: [
     'node_modules/bootstrap/dist/css/bootstrap.css',
     'node_modules/font-awesome/css/font-awesome.css',
+    'node_modules/rc-dropdown/assets/index.css',
+    'node_modules/rc-dialog/assets/index.css',
     //'node_modules/dropzone/dist/base.js',
     //'node_modules/dropzone/dist/dropzone.css'
   ],

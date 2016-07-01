@@ -2,6 +2,9 @@
 
 import _ from 'lodash'
 import errcode from './error'
+import moment from 'moment'
+
+moment.locale('zh-cn')
 
 const [ran_len, ran_str] = [
  6,
@@ -42,9 +45,24 @@ const error = (code) => {
 
 const myError = (e) => e.code > 1000
 
+const firstImg = (str) => {
+  let urls = str.match(/\!\[([a-zA-Z0-9\u2E80-\u9FFF\-\_\s]*)\]\((((http|https:\/\/)|\/\/|\/|\.\/|\.\.\/)[^>]*?.(png|jpg|svg|gif))\)/g)
+  if (!urls || urls.length === 0) {
+    return null
+  }
+  let url = urls[0].match(/((http|https:\/\/)|\/\/|\/|\.\/|\.\.\/)[^>]*?.(png|jpg|svg|gif)/)
+  return url[0]
+}
+
+const moment_to = (date) => {
+  return moment(date).fromNow()
+}
+
 export default {
   random,
   format,
   error,
-  myError
+  myError,
+  firstImg,
+  moment_to
 }

@@ -1,13 +1,17 @@
 <!-- article-list start -->
         <div class="article-list">
           <ul class="list-group">
-{% for item in article %}          
+{% for item in article %}
+{% set itemImg = tools.firstImg(item.content) %}
+{% set update_at = tools.moment_to(item.update_at) %}
             <li class="list-group-item">
-              <a href="{{ item.link }}" class="wrap-img" target="_blank"><img src="{{ item.img }}"></a>
+{% if itemImg %}
+              <a href="/post/{{ item._id.toString() }}" class="wrap-img" target="_blank"><img src="{{ itemImg }}"></a>
+{% endif %}
               <div>
-                <p class="list-top">三个月前</p>
+                <p class="list-top">{{ update_at }}</p>
                 <h4 class="title">
-                  <a href="{{ item.link }}" target="_blank">{{ item.title }}</a>
+                  <a href="/post/{{ item._id.toString() }}" target="_blank">{{ item.titlename }}</a>
                 </h4>
                 <div class="list-foot">
                   <span>阅读 1764</span>
@@ -17,6 +21,6 @@
               </div>
             </li>
 {% endfor %}
-          </ul>
+          </ul>{{config.name}}
         </div>
         <!-- article-list end -->

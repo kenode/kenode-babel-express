@@ -44,7 +44,7 @@ export default {
     sign_forget: '/sign-forget',
     sign_out: '/sign-out',
     setting: '/setting',
-    writer: '/writer'
+    writer: '/user/writer'
   },
 
   // admin
@@ -63,8 +63,8 @@ export default {
     host: 'smtp.mxhichina.com',
     port: 25,
     auth: {
-      user: 'service@kenode.org',
-      pass: 'keNode2016'
+      user: 'service@xxx.com',
+      pass: '12345678'
     }
   },
 
@@ -80,9 +80,12 @@ export default {
   // 存放文章标签文件
   tags_file: './alltags.json',
 
+  // 回收站文件保留天数
+  recovery: 60,
+
   // 微信公众号
   wx: {
-    app_id:     'wx740bf814d4daadce',
-    app_secret: '0657ef4ffb9e22a1777993a2667481f5'
+    app_id:     '',
+    app_secret: ''
   }
 }

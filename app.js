@@ -24,6 +24,8 @@ import busboy from 'connect-busboy'
 import bytes from 'bytes'
 import webRouter from './web_router'
 import apiRouterV1 from './api_router_v1'
+import Tools from './common/tools'
+import moment from 'moment'
 
 //import socketio from 'socket.io'
 
@@ -85,7 +87,10 @@ passport.deserializeUser( (user, done) =>
 
 // set static, dynamic helpers
 _.extend(app.locals, {
-  config: config
+  config: config,
+  tools: Tools,
+  moment: moment,
+  _: _
 })
 
 // 上传设置

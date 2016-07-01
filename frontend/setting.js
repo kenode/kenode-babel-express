@@ -37,7 +37,7 @@ $(() => {
     render () {
       let _useNav = _.find(nav_menus, { tag: this.state.navTag })
       return (
-        <div className="setting-inner">
+        <div className="setting-inner" style={{width: 540}}>
           <h2 className="page-title">
             <i className="fa fa-cogs"></i> 设置
           </h2>

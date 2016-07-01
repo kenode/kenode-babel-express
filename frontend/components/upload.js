@@ -8,14 +8,14 @@ import Message from '../components/message'
 
 const message = new Message({ limit: 1 })
 
-class SettingProfile extends Component {
+
+class Upload extends Component {
 
   constructor (props) {
     super(props)
     this.state = {
       percent: 0,
-      type: 'init',
-      avatar: '/img/logo-blue-cube.png'
+      type: 'init'
     }
   }
 
@@ -41,23 +41,7 @@ class SettingProfile extends Component {
                             </div>
                           </div>
                         </div>
-    return (
-      <div className="tab-content">
-        <form onSubmit={this._submitHandle.bind(this)}>
-          <div className="form-group">
-            <span>头像</span>
-            <div className="avatar">
-              <img src={this.state.avatar} />
-              { this.state.type === 'load' ? loadDropzone : initDropzone }
-            </div>
-          </div>
-        </form>
-      </div>
-    )
-  }
-
-  _submitHandle (e) {
-    e.preventDefault()
+    return this.state.type === 'load' ? loadDropzone : initDropzone
   }
 
   _onDrop (files) {
@@ -70,7 +54,7 @@ class SettingProfile extends Component {
       return message.danger('<strong>Danger!<\/strong> 上传的文件不是图片类型')
     }
     that.setState({ type: 'load' })
-    request.post('/upload/avatar')
+    request.post('/upload/image')
       .attach(file.name, file)
       .on('progress', e => {
         let _percent = ~~e.percent
@@ -92,13 +76,22 @@ class SettingProfile extends Component {
           return message.danger('<strong>Danger!<\/strong> ' + (res.body.message || error(res.body.code).message))
         }
         setTimeout( () => {
-          that.setState({ percent: 0, type: 'init', avatar: res.body.data.url })
-        }, 3000)
+          that.setState({ percent: 0, type: 'init' })
+          that.props.refreshState(res.body.data.url)
+        }, 1000)
       })
-
   }
 
 }
 
+Upload.propTypes = {
+  type: PropTypes.string,
+  refreshState: PropTypes.func
+}
 
-export default SettingProfile
+Upload.defaultProps = {
+  type: 'image',
+  refreshState: () => null
+}
+
+export default Upload

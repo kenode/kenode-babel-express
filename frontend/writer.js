@@ -3,147 +3,85 @@
 import win from './common/init-window'
 import { Component, PropTypes } from 'react'
 import { render } from 'react-dom'
-import TitleInput from './components/title-input'
-import TagsInput from './components/tags-input'
-import Editor from './components/editor'
-import ButtonGroup from './components/buttongroup'
-import request from 'superagent'
-import { error } from './common/tools'
-import Message from './components/message'
-
-const message = new Message({ limit: 1 })
-const tags = JSON.parse($('#writer [name="tags"]').val() || '[]')
-const title = $('#writer [name="title"]').val()
-const allTags = JSON.parse($('#writer [name="alltags"]').val() || '[]')
-const content = $('#writer [name="content"]').val()
-const submit = JSON.parse($('#writer [name="submit"]').val() || '{}')
-const action = window.location.pathname + window.location.search
-//const isnote = $('#writer [name="isnote"]').val() === 'true' ? true : false
+import Writer from './components/writer'
+import NavBarTop from './components/navbar-top'
+import Document from './components/document'
+import _ from 'lodash'
 
 $(() => {
   win.Init()
 
-  class Writer extends Component {
+  class App extends Component {
 
-    constructor () {
-      super()
+    constructor (props) {
+      super(props)
       this.state = {
-        title: title || '',
-        tags: tags || [],
-        content: content || '',
-        isnote: submit.isnote || false,
-        type: submit.type || 'saved',
-        alltags: allTags || [],
-        submit: {
-          saved: 'reset',
-          publish: 'reset'
+        type: 'draft',
+        alltags: [],
+        item: {
+          titlename: '',
+          tags: [],
+          content: '',
+          is_note: false,
+          type: 'draft'
         },
-        publish: undefined
+        updateItem: null,
+        newadd: false
       }
     }
 
     render () {
-      let noteContent = (
-        <div className="writer-inner">
-          <p className="warning">{this.state.publish}</p>
+      return (
+        <div className="wraper">
+          <Document type={this.state.type}
+                    newadd={this.state.newadd}
+                    updateItem={this.state.updateItem}
+                    refreshState={this._getItem.bind(this)} />
+          <div className="bodyer-wrap">
+            <NavBarTop  tab={this.state.type}
+                        refreshState={this._getNav.bind(this)} />
+            <div className="writer-wrap">
+              <Writer item={this.state.item}
+                      alltags={this.state.alltags}
+                      refreshState={this._updateItem.bind(this)} />
+            </div>
+            <div className="message-wrap" />
+          </div>
         </div>
       )
-      let fromContent = (
-        <div className="writer-inner">
-          <form>
-            <h2>写文章</h2>
-            <TitleInput title={this.state.title} 
-                        refreshState={this._refreshState.bind(this, 'title')} />
-            <TagsInput tags={this.state.tags} 
-                       allTags={this.state.alltags} 
-                       refreshState={this._refreshState.bind(this, 'tags')} />
-            <Editor output="markdown" 
-                    content={this.state.content} 
-                    refreshState={this._refreshState.bind(this, 'content')} />
-            <ButtonGroup saved={this._saved.bind(this)}
-                         publish={this._publish.bind(this)}
-                         refreshState={this._refreshState.bind(this, 'isnote')}
-                         checked={this.state.isnote}
-                         type={this.state.type}
-                         submit={this.state.submit} />
-          </form>
-        </div>
-      )
-      return this.state.publish ? noteContent : fromContent
     }
 
-    _saved (e) {
-      e.preventDefault()
-      this.setState({ submit: { saved: 'loading', publish: 'disabled' } })
-      request.post(action)
-        .send(Object.assign(this.state, { type: 'saved' }))
-        .set('Accept', 'application/json')
-        .end( function(err, res) {
-          if (err) {
-            setTimeout( () => {
-              this.setState({ submit: { saved: 'reset', publish: 'reset' } })
-            }, 3000)
-            return message.danger('<strong>Danger!<\/strong> ' + error(1005).message)
-          }
-          if (res.statusCode !== 200) {
-            setTimeout( () => {
-              this.setState({ submit: { saved: 'reset', publish: 'reset' } })
-            }, 3000)
-            return message.danger('<strong>Danger!<\/strong> ' + error(1000).message + res.statusText)
-          } 
-          if (res.body.code > 0) {
-            setTimeout( () => {
-              this.setState({ submit: { saved: 'reset', publish: 'reset' } })
-            }, 3000)
-            return message.danger('<strong>Danger!<\/strong> ' + error(res.body.code).message)
-          }
-          setTimeout( () => {
-            this.setState({ submit: { saved: 'reset', publish: 'reset' } })
-          }, 3000)
-          this.setState({ alltags: res.body.data.alltags })
-          if (window.location.search !== '?draft=' + res.body.data.id) {
-            window.location.href = '/writer?draft=' + res.body.data.id
-          }
-        }.bind(this))
+    _getNav (nav) {
+      if (nav === 'newadd') {
+        this.setState({ 
+          item: {
+            titlename: '',
+            tags: [],
+            content: '',
+            is_note: false,
+            type: 'draft'
+          },
+          newadd: true
+        })
+        return
+      }
+      this.setState({ type: nav })
     }
 
-    _publish (e) {
-      e.preventDefault()
-      this.setState({ submit: { saved: 'disabled', publish: 'loading' } })
-      request.post(action)
-        .send(Object.assign(this.state, { type: 'publish' }))
-        .set('Accept', 'application/json')
-        .end( function(err, res) {
-          if (err) {
-            setTimeout( () => {
-              this.setState({ submit: { saved: 'reset', publish: 'reset' } })
-            }, 3000)
-            return message.danger('<strong>Danger!<\/strong> ' + error(1005).message)
-          }
-          if (res.statusCode !== 200) {
-            setTimeout( () => {
-              this.setState({ submit: { saved: 'reset', publish: 'reset' } })
-            }, 3000)
-            return message.danger('<strong>Danger!<\/strong> ' + error(1000).message + res.statusText)
-          } 
-          if (res.body.code > 0) {
-            setTimeout( () => {
-              this.setState({ submit: { saved: 'reset', publish: 'reset' } })
-            }, 3000)
-            return message.danger('<strong>Danger!<\/strong> ' + error(res.body.code).message)
-          }
-          this.setState({ publish: res.body.data })
-        }.bind(this))
+    _getItem (data) {
+      let _item = _.assign(data.item, { type: this.state.type })
+      this.setState({ item: _item, alltags: data.alltags, newadd: false })
     }
 
-    _refreshState (key, val) {
-      let temp = {}
-      temp[key] = val
-      this.setState(temp)
+    _updateItem (data) {
+      this.setState({ 
+        type: data.type,
+        updateItem: data, 
+        item: _.assign(data.item, { type: data.type })
+      })
     }
-
   }
 
-  render((<Writer />), document.getElementById('writer'))
+  render((<App />), document.getElementById('app'))
 
 })

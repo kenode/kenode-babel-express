@@ -9,19 +9,18 @@ class ButtonGroup extends Component {
     super(props)
     this.state = {
       checked: false,
-      publish: '发布文章'
+      publish: '直接发布'
     }
   }
 
-  componentDidMount () {
-    this.setState({ checked: this.props.checked })
-    if (this.props.type === 'correct') {
-      $(findDOMNode(this.refs.isnote)).hide()
-      this.setState({ publish: '修正文章' })
-    }
-  }
+ 
 
   componentWillReceiveProps (nextProps) {
+    this.setState({ checked: nextProps.checked })
+    if (nextProps.type === 'publish') {
+      //$(findDOMNode(this.refs.publish)).hide()
+      this.setState({ publish: '修正文章' })
+    }
     let {saved, publish} = this.refs
     if (nextProps.submit.saved === 'loading') {
       $(saved).button('loading')
@@ -53,7 +52,7 @@ class ButtonGroup extends Component {
                   ref="publish"
                   disabled={this.props.submit.publish !== 'reset' ? 'disabled' : ''}
                   onClick={publishHandle.bind(this)}>
-            <i className="fa fa-share" aria-hidden="true"></i> 发布文章
+            <i className="fa fa-share" aria-hidden="true"></i> 直接发布
           </button>
         </div>
         <div className="foot-left">

@@ -33,3 +33,60 @@ body {
   display: flex;
   flex: 1;
 }
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rc-dropdown-menu>.rc-dropdown-menu-item-selected:after {
+  content: no-close-quote;
+}
+
+.rc-dropdown-menu>.rc-dropdown-menu-item {
+  cursor: pointer;
+}
+
+.rc-dialog-footer {
+
+  .btn {
+    margin-left: 10px;
+  }
+}
+
+.rc-dialog-body {
+
+
+  .dropzone {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 8px;
+    background: #eee;
+    border-width: 1px;
+    border-color: #999;
+    border-style: dashed;
+    border-radius: 5px;
+
+    &>div {
+      height: 90px;
+      font-weight: normal;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      color: #999;
+
+      .progress {
+        margin-bottom: 0;
+        height: 18px;
+        background-color: rgba(0,0,0,.075);
+      }
+    }
+  }
+}

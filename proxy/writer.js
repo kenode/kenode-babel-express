@@ -1,5 +1,6 @@
+'use strict';
 
-
+import config from '../config'
 import { draftDao, postDao } from '../models'
 import draftData from '../datatypes/draft'
 import postData from '../datatypes/post'
@@ -13,29 +14,25 @@ import Tools from '../common/tools'
 const writerProxy = {
   newDraft,
   updateByIdDraft,
+  updateDraft,
   newPost,
   updateByIdPost,
+  updatePost,
   findByIdPost,
   findByIdDraft,
   findByIdInfo,
-  findOneDraft,
-  updateByIdInfo
+  updateByIdInfo,
+  getAllPost,
+  getAllDraft,
+  recoverDraft,
+  recoverPost,
+  removeDraft,
+  removePost,
+  clearRecovery
 }
 const WriterProxy = Promise.promisifyAll(writerProxy)
 
-/*
-opts = {
-  type: saved
-}
-*/
 
-function saveDraft (info, opts, callback) {
-
-  if (!opts) {
-    // 新建一份草稿
-  }
-
-}
 
 
 
@@ -66,6 +63,16 @@ function updateByIdDraft (id, data, callback) {
 }
 
 /**
+ * 自定义条件修改草稿
+ * @param {Object} info
+ * @param {Object} data
+ * @param {Function} callback
+ */
+function updateDraft (info, data, callback) {
+  draftDao.model.update(info, data, callback)
+}
+
+/**
  * 发布新文章
  * @param {Object} info
  * @param {Function} callback
@@ -92,6 +99,16 @@ function updateByIdPost (id, data, callback) {
 }
 
 /**
+ * 自定义条件修改文章
+ * @param {Object} info
+ * @param {Object} data
+ * @param {Function} callback
+ */
+function updatePost (info, data, callback) {
+  postDao.model.update(info, data, callback)
+}
+
+/**
  * 根据ID获取发布的文章
  * @param {String} id
  * @param {Function} callback
@@ -109,9 +126,32 @@ function findByIdDraft (id, callback) {
   draftDao.getById(id, callback)
 }
 
-function findOneDraft (info, callback) {
-  draftDao.one(info, callback)
+/**
+ * 获取发布文章列表
+ * @parma {Object} query
+ * @parma {Object} fields
+ * @parma {Object} sort
+ * @parma {Number} limit
+ * @parma {Number} skip
+ * @parma {Function} callback
+ */
+function getAllPost (query, fields, sort, limit, skip, callback) {
+  postDao.model.find(query).select(fields).sort(sort).limit(limit).skip(skip).exec(callback)
 }
+
+/**
+ * 获取草稿列表
+ * @parma {Object} query
+ * @parma {Object} fields
+ * @parma {Object} sort
+ * @parma {Number} limit
+ * @parma {Number} skip
+ * @parma {Function} callback
+ */
+function getAllDraft (query, fields, sort, limit, skip, callback) {
+  draftDao.model.find(query).select(fields).sort(sort).limit(limit).skip(skip).exec(callback)
+}
+
 
 /**
  * 获取文章信息
@@ -155,7 +195,9 @@ function findByIdInfo (info, callback) {
   return callback(null, writerData())
 }
 
-
+/**
+ * 更新文章信息
+ */
 function updateByIdInfo (info, callback) {
   if (info.type === 'saved') {
     // 保存草稿
@@ -195,6 +237,7 @@ function updateByIdInfo (info, callback) {
                           titlename: info.titlename,
                           tags: info.tags,
                           content: info.content,
+                          is_note: info.isnote,
                           update_at: moment()
                         })
                         .then( doc => {
@@ -223,6 +266,7 @@ function updateByIdInfo (info, callback) {
                             titlename: info.titlename,
                             tags: info.tags,
                             content: info.content,
+                            is_note: info.isnote,
                             update_at: moment()
                           })
                         })
@@ -248,29 +292,82 @@ function updateByIdInfo (info, callback) {
   }
 }
 
-export default writerProxy
+/**
+ * 将草稿放入回收站
+ */
+function recoverDraft (ids, callback) {
+  let conditions  = _.isArray(ids) 
+                  ? { _id: { $in: ids } } 
+                  : { _id: ids }
+  WriterProxy.updateDraftAsync(conditions, {
+                recovery: true,
+                recover_at: moment()
+              })
+              .then( doc => {
+                return callback(null, doc)
+              })
+              .catch( err => callback(err) )
+}
 
-/*
-updateByIdDraft('57568b5fd2347a5d62bac3a7', {
-  tags: ['git', 'node.js', 'pm2', 'nginx'],
-  content: '## 正文开始www'
-}, function(err, draft) {
-  if (err) {
-    console.log(err)
-  }
-  else {
-    console.log(draft)
-  }
-})
-newDraft({
-  titlename: '标题名称',
-  tags: ['git', 'node.js', 'pm2'],
-  content: '## 正文开始'
-}, function(err, draft) {
-  if (err) {
-    console.log(err)
-  }
-  else {
-    console.log(draft)
-  }
-})*/
+/**
+ * 将已发布文章放入回收站
+ */
+function recoverPost (ids, callback) {
+  let conditions  = _.isArray(ids) 
+                  ? { _id: { $in: ids } } 
+                  : { _id: ids }
+  WriterProxy.updatePostAsync(conditions, {
+                recovery: true,
+                recover_at: moment()
+              })
+              .then( doc => {
+                return callback(null, doc)
+              })
+              .catch( err => callback(err) )
+
+}
+
+/**
+ * 按条件删除草稿
+ */
+function removeDraft (ids, callback) {
+  let conditions  = _.isArray(ids) 
+                  ? { _id: { $in: ids } } 
+                  : { _id: ids }
+  draftDao.delete(conditions, callback)
+}
+
+/**
+ * 按条件删除已发布文章
+ */
+function removePost (ids, callback) {
+  let conditions  = _.isArray(ids) 
+                  ? { _id: { $in: ids } } 
+                  : { _id: ids }
+  postDao.delete(conditions, callback)
+}
+
+/**
+ * 清理回收站
+ */
+function clearRecovery (callback) {
+  let info = { draft: null, post: null }
+  WriterProxy.removeDraftAsync({
+                recovery: true,
+                recover_at: {$lte: moment().add(-(config.recovery || 60), 'days')}
+              })
+              .then( doc => {
+                info.draft = doc.result
+                return WriterProxy.removePostAsync({
+                  recovery: true,
+                  recover_at: {$lte: moment().add(-(config.recovery || 60), 'days')}
+                })
+              })
+              .then( doc => {
+                info.post = doc.result
+                return callback(null, info)
+              })
+              .catch( err => callback(err) )
+}
+
+export default writerProxy
