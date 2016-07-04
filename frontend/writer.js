@@ -76,6 +76,7 @@ $(() => {
     _updateItem (data) {
       this.setState({ 
         type: data.type,
+        alltags: data.alltags,
         updateItem: data, 
         item: _.assign(data.item, { type: data.type })
       })

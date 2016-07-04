@@ -103,7 +103,12 @@ class Writer extends Component {
     let _search = this.state._id ? '?' + _item.type + '=' + this.state._id : ''
     let action = '/user/writer' + _search
     request.post(action)
-      .send(Object.assign(this.state, { type: 'saved' }))
+      .send({
+        title: this.state.title,
+        tags: this.state.tags.length > 0 ? _.split(this.state.tags, ',') : [],
+        content: this.state.content,
+        type: 'saved'
+      })
       .set('Accept', 'application/json')
       .end( function(err, res) {
         if (err) {
@@ -126,8 +131,9 @@ class Writer extends Component {
         }
         let info = res.body.data
         message.success('<strong>Success!<\/strong> 草稿保存成功')
+        let that = this
         setTimeout( () => {
-          this.props.refreshState(_.assign(info, { type: 'draft' }))
+          that.props.refreshState(_.assign(info, { type: 'draft' }))
         }, 1500)
         
       }.bind(this))
@@ -140,7 +146,13 @@ class Writer extends Component {
     let _search = this.state._id ? '?' + _item.type + '=' + this.state._id : ''
     let action = '/user/writer' + _search
     request.post(action)
-      .send(Object.assign(this.state, { type: 'publish' }))
+      .send({
+        title: this.state.title,
+        tags: this.state.tags.length > 0 ? _.split(this.state.tags, ',') : [],
+        content: this.state.content,
+        isnote: this.state.isnote,
+        type: 'publish'
+      })
       .set('Accept', 'application/json')
       .end( function(err, res) {
         if (err) {
@@ -164,8 +176,9 @@ class Writer extends Component {
         
         let info = res.body.data
         message.success('<strong>Success!<\/strong> ' + _item.type === 'post' ? '文章已修正' : '文章已发布。')
+        let that = this
         setTimeout( () => {
-          this.props.refreshState(_.assign(info, { type: 'post' }))
+          that.props.refreshState(_.assign(info, { type: 'post' }))
         }, 1500)
       }.bind(this))
   }

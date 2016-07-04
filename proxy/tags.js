@@ -27,6 +27,7 @@ function loadTags () {
 function addTags (tags) {
   let alltags = loadTags()
   let _tagsData = []
+  tags = _.compact(tags)
   if (!existsSync(tagsFile)) {
     _tagsData = tagsData
     _tagsData[0].pane = tags
