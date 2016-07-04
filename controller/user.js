@@ -104,11 +104,12 @@ const writerPage = (req, res, next) => {
 const writer = (data, req, res, next) => {
   WriterProxy.updateByIdInfoAsync(data)
               .then( doc => {
+                let _doc = _.pick(doc, ['_id', 'titlename', 'tags', 'is_note', 'content'])
                 if (data.type === 'saved') {
-                  return res.json({ code: 0, data: { item: doc, alltags: tagsProxy.loadTags() } })
+                  return res.json({ code: 0, data: { item: _doc, alltags: tagsProxy.loadTags() } })
                 }
                 if (data.type === 'publish') {
-                  return res.json({ code: 0, data: { item: doc, alltags: tagsProxy.loadTags() } })
+                  return res.json({ code: 0, data: { item: _doc, alltags: tagsProxy.loadTags() } })
                 }
               })
               .catch( err => next(err) )

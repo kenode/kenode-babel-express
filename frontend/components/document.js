@@ -240,7 +240,6 @@ class Document extends Component {
     let _draft = this.state.draft
     let _post = this.state.post
     let _list = this.props.type === 'post' ? _post : _draft
-    console.log(_list[7])
     let info = _.find(_list, {_id: id})
     
 

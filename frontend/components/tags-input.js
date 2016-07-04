@@ -28,7 +28,7 @@ class TagsInput extends Component {
   }
 
   render () {
-    let tags = this.props.tags
+    let tags = this.props.tags.length > 0 ? _.split(this.props.tags, ',') : []
     return (
       <div className="textbox tag-input" 
            role="tag-input" 
@@ -113,7 +113,7 @@ class TagsInput extends Component {
   }
 
   _addTag (tag) {
-    let tags = this.props.tags
+    let tags = this.props.tags.length > 0 ? _.split(this.props.tags, ',') : []
     if(tag && tags.indexOf(tag) < 0) {
       if (tags.length >= 5) {
         return
@@ -124,7 +124,7 @@ class TagsInput extends Component {
   }
 
   _removeTag (index) {
-    let tags = this.props.tags
+    let tags = this.props.tags.length > 0 ? _.split(this.props.tags, ',') : []
     if (typeof index == 'undefined') {
       index = tags.length - 1
     }

@@ -24,7 +24,7 @@ class Writer extends Component {
     this.state = {
       _id: undefined,
       title: '',
-      tags: [],
+      tags: '',
       content: '',
       isnote: false,
       type: 'saved',
@@ -50,7 +50,7 @@ class Writer extends Component {
     this.setState({ 
       _id: _item._id || undefined,
       title: _item.titlename || '',
-      _tags: _item.tags || [],
+      tags: _.join(_item.tags, ',') || '',
       content: _item.content || '',
       isnote: _item.is_note || false,
       type: _item.type && _item.type === 'post' ? 'publish' : 'saved',
@@ -180,7 +180,7 @@ class Writer extends Component {
         WriterStore.set('save', '1')
         return
       }
-      if (_.toArray(this.props.item.tags) !== this.state.tags) {
+      if (_.join(this.props.item.tags, ',') !== this.state.tags) {
         WriterStore.set('save', '1')
         return
       }
